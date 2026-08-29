@@ -197,25 +197,25 @@ flowchart TD
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Alice as Usuario A (Alice)
-    actor Bob as Usuario B (Bob)
+    actor Benjamin as Benjamín
+    actor Manuel as Manuel
     participant Channels as Channels Service (:8002)
     participant Media as Media Service (:8004)
     participant Storage as Media Storage & DB
     participant Broker as RabbitMQ
 
-    Alice->>Media: POST /api/v1/channels/ch-1/attachments (file: doc.pdf)
+    Benjamin->>Media: POST /api/v1/channels/ch-1/attachments (file: doc.pdf, uploader: benja)
     Media->>Channels: GET /api/v1/channels/ch-1 (Valida canal)
     Channels-->>Media: 200 OK
     Media->>Storage: Guarda binario en disco y metadatos en MongoDB
     Media->>Broker: Publica attachment.att-1.uploaded
-    Media-->>Alice: 201 Created (Metadatos + URL de descarga)
+    Media-->>Benjamin: 201 Created (Metadatos + URL de descarga)
 
-    Bob->>Media: GET /api/v1/channels/ch-1/attachments
-    Media-->>Bob: 200 OK [ { id: "att-1", filename: "doc.pdf", ... } ]
+    Manuel->>Media: GET /api/v1/channels/ch-1/attachments
+    Manuel-->>Media: 200 OK [ { id: "att-1", filename: "doc.pdf", ... } ]
 
-    Bob->>Media: GET /api/v1/attachments/att-1/download
-    Media-->>Bob: 200 OK (Stream binario application/pdf)
+    Manuel->>Media: GET /api/v1/attachments/att-1/download
+    Manuel-->>Media: 200 OK (Stream binario application/pdf)
 ```
 
 ---
@@ -225,16 +225,16 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Alice as Usuario A (Alice)
-    actor Bob as Usuario B (Bob)
+    actor Benjamin as Benjamín
+    actor Manuel as Manuel
     participant Messages as Messages Service (:8003)
     participant Broker as RabbitMQ
     participant Media as Media Service (:8004)
     participant ExtWeb as Sitio Web Externo
 
-    Alice->>Messages: POST /api/v1/channels/ch-1/messages ("Ver https://...")
+    Benjamin->>Messages: POST /api/v1/channels/ch-1/messages ("Ver https://...")
     Messages->>Broker: Publica chat.message.created
-    Messages-->>Alice: 201 Created
+    Messages-->>Benjamin: 201 Created
 
     Broker-->>Media: Consume chat.message.created
     Media->>ExtWeb: GET https://... (Scrape OpenGraph)
@@ -242,8 +242,8 @@ sequenceDiagram
     Media->>Media: Guarda en DB chat_media (Caché)
     Media->>Broker: Publica link_preview.lp-1.generated
 
-    Bob->>Media: GET /api/v1/links/preview?url=https://...
-    Media-->>Bob: 200 OK {"title": "Título Web", "image_url": "..."}
+    Manuel->>Media: GET /api/v1/links/preview?url=https://...
+    Media-->>Manuel: 200 OK {"title": "Título Web", "image_url": "..."}
 ```
 
 ---

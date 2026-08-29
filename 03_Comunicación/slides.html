@@ -4,24 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Capacidad Vertical: Media Service - Presentación</title>
+    <title>Capacidad Vertical: Media Service - Sistemas Distribuidos y Microservicios</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
         rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
     <style>
         :root {
-            --bg-primary: #060a14;
-            --bg-card: rgba(13, 20, 38, 0.96);
-            --border-card: rgba(59, 130, 246, 0.3);
-            --accent-blue: #3b82f6;
-            --accent-cyan: #06b6d4;
-            --accent-indigo: #6366f1;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
+            --bg-page: #e2e8f0;
+            --slide-bg: #ffffff;
+            --text-dark: #111827;
             --text-muted: #64748b;
+            --text-light: #f8fafc;
+            --banner-bg: #3f4753;
+            --card-dark: #222831;
+            --accent-blue: #004b87;
+            --accent-cyan: #0284c7;
+            --border-light: #e2e8f0;
+            --border-dark: #334155;
         }
 
         * {
@@ -31,40 +33,43 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-dark);
             height: 100vh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            background-image:
-                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.22) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.22) 0px, transparent 50%);
         }
 
-        /* Top Header */
+        /* Top Navigation Header */
         header {
             padding: 10px 32px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            background: rgba(10, 15, 29, 0.85);
-            backdrop-filter: blur(12px);
-            z-index: 10;
+            background: #1e293b;
+            color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            z-index: 20;
         }
 
-        .logo {
+        .header-title {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.15rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #60a5fa, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 1rem;
+            font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            color: #cbd5e1;
+        }
+
+        .header-title span.badge {
+            background: #0284c7;
+            color: white;
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 4px;
         }
 
         .controls {
@@ -74,11 +79,11 @@
         }
 
         button {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: var(--text-primary);
-            padding: 8px 16px;
-            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 6px 14px;
+            border-radius: 6px;
             cursor: pointer;
             font-family: 'Inter', sans-serif;
             font-size: 0.85rem;
@@ -87,259 +92,321 @@
         }
 
         button:hover {
-            background: rgba(59, 130, 246, 0.3);
-            border-color: var(--accent-blue);
+            background: #0284c7;
+            border-color: #0284c7;
         }
 
         .slide-counter {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.95rem;
-            color: var(--accent-cyan);
+            color: #38bdf8;
             padding: 0 8px;
             font-weight: 600;
         }
 
-        /* Slide Container */
+        /* Slide Viewport */
         .presentation-container {
             flex: 1;
             position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 12px 20px;
+            padding: 16px;
         }
 
-        /* Slide Layout */
+        /* 16:9 Slide Canvas */
         .slide {
             position: absolute;
             width: 96%;
             max-width: 1400px;
-            height: 92%;
-            max-height: 850px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-card);
-            border-radius: 20px;
-            padding: 30px 40px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(16px);
+            height: 94%;
+            max-height: 860px;
+            background: var(--slide-bg);
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
             display: flex;
             flex-direction: column;
-            overflow-y: auto;
+            padding: 44px 56px 36px 56px;
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
-            transform: scale(0.98);
-            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
-            z-index: 1;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+            overflow: hidden;
         }
 
         .slide.active {
             opacity: 1;
             visibility: visible;
             pointer-events: auto;
-            transform: scale(1);
-            z-index: 5;
+            z-index: 10;
         }
 
-        /* Specialized Full-Size Diagram Slide */
-        .slide.diagram-slide {
-            width: 98%;
-            max-width: 1550px;
-            height: 95%;
-            max-height: 900px;
-            padding: 16px 24px;
-            overflow: hidden;
+        /* Geometric Icon Decoration (Top Right / Left) */
+        .deco-icon-tr {
+            position: absolute;
+            top: 36px;
+            right: 48px;
+            width: 48px;
+            height: 48px;
+            opacity: 0.85;
+            pointer-events: none;
         }
 
-        .slide.diagram-slide .slide-title {
-            margin-bottom: 8px;
-            padding-bottom: 6px;
-            font-size: 1.5rem;
+        .deco-icon-bl {
+            position: absolute;
+            bottom: 40px;
+            left: 48px;
+            width: 40px;
+            height: 40px;
+            opacity: 0.85;
+            pointer-events: none;
         }
 
         /* Typography */
         h1,
         h2,
-        h3,
-        h4 {
-            font-family: 'Outfit', sans-serif;
+        h3 {
+            font-family: 'Inter', system-ui, sans-serif;
+            color: var(--text-dark);
+            letter-spacing: -0.02em;
         }
 
-        .slide-title {
-            font-size: 1.65rem;
+        .slide-heading {
+            font-size: 2.2rem;
             font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 2px solid rgba(59, 130, 246, 0.3);
-            padding-bottom: 10px;
-            flex-shrink: 0;
+            line-height: 1.15;
+            margin-bottom: 24px;
+            max-width: 80%;
         }
 
-        .slide-title span.badge {
-            font-size: 0.75rem;
-            font-family: 'JetBrains Mono', monospace;
-            background: rgba(59, 130, 246, 0.2);
-            color: #60a5fa;
-            padding: 4px 10px;
-            border-radius: 6px;
-            border: 1px solid rgba(59, 130, 246, 0.4);
+        /* Footer Notes */
+        .slide-footer-note {
+            margin-top: auto;
+            font-size: 0.88rem;
+            color: #475569;
+            line-height: 1.45;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 10px;
         }
 
-        /* Lead Slide (Portada) */
-        .lead-slide {
+        /* Layout 1: Portada (Page 1 in PDF) */
+        .slide-cover {
             justify-content: center;
             align-items: center;
             text-align: center;
+            padding: 40px;
         }
 
-        .lead-slide h1 {
-            font-size: 3rem;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 16px;
-            background: linear-gradient(135deg, #60a5fa, #38bdf8, #c084fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .lead-slide h3 {
-            font-size: 1.35rem;
-            color: var(--text-secondary);
-            font-weight: 400;
+        .cover-icon {
+            width: 72px;
+            height: 72px;
             margin-bottom: 32px;
         }
 
-        .tag-pill {
-            display: inline-block;
-            background: rgba(99, 102, 241, 0.15);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            color: #a5b4fc;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            margin: 4px;
+        .slide-cover h1 {
+            font-size: 3.4rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 16px;
+            line-height: 1.15;
         }
 
-        /* Grids & Cards */
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            flex: 1;
+        .slide-cover h2 {
+            font-size: 1.6rem;
+            font-weight: 400;
+            color: #475569;
+            margin-bottom: 48px;
         }
 
-        .card {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 20px;
+        .cover-meta {
+            font-size: 0.95rem;
+            color: #64748b;
+            font-weight: 500;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 18px;
+            width: 80%;
         }
 
-        .card h3 {
-            font-size: 1.15rem;
-            color: #60a5fa;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        ul {
-            list-style-type: none;
-        }
-
-        li {
+        /* Layout 2: 3 Dark Cards over Grey Horizontal Banner (Pages 2, 5, 6 in PDF) */
+        .banner-container {
             position: relative;
-            padding-left: 20px;
-            margin-bottom: 10px;
-            font-size: 0.92rem;
-            line-height: 1.5;
-            color: var(--text-secondary);
+            background: var(--banner-bg);
+            margin: 20px -56px 20px -56px;
+            padding: 24px 56px;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
         }
 
-        li::before {
-            content: "▹";
-            position: absolute;
-            left: 0;
-            color: var(--accent-cyan);
-            font-size: 1.1rem;
+        .banner-card {
+            flex: 1;
+            background: var(--card-dark);
+            color: var(--text-light);
+            border-radius: 4px;
+            padding: 24px 20px;
+            display: flex;
+            flex-direction: column;
+            min-height: 220px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
-        li strong {
+        .banner-card h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
             color: #ffffff;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #374151;
+            padding-bottom: 8px;
         }
 
-        /* Tables */
+        .banner-card p {
+            font-size: 0.88rem;
+            color: #cbd5e1;
+            line-height: 1.45;
+        }
+
+        /* Layout 3: Split Media + Numbered Items (Pages 4, 8 in PDF) */
+        .split-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 36px;
+            flex: 1;
+            align-items: center;
+        }
+
+        .split-media-box {
+            background: #1e293b;
+            color: white;
+            border-radius: 8px;
+            height: 100%;
+            max-height: 480px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid #334155;
+        }
+
+        .split-media-box h3 {
+            color: #ffffff;
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+        }
+
+        .split-media-box p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .split-items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .numbered-item {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .number-box {
+            width: 48px;
+            height: 48px;
+            background: #ffffff;
+            border: 2px solid #1e293b;
+            color: #1e293b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.15rem;
+            font-weight: 700;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .item-content h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .item-content p {
+            font-size: 0.92rem;
+            color: #475569;
+            line-height: 1.45;
+        }
+
+        /* Layout 4: Academic Table (Pages 11, 19, 20 in PDF) */
+        .table-container {
+            width: 100%;
+            margin: 12px 0;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #cbd5e1;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.85rem;
-            margin-top: 10px;
+            font-size: 0.9rem;
+            text-align: left;
         }
 
         th {
-            background: rgba(30, 58, 138, 0.4);
-            color: #93c5fd;
-            text-align: left;
-            padding: 10px 14px;
-            border-bottom: 1px solid var(--border-card);
+            background: #475569;
+            color: #ffffff;
+            padding: 12px 16px;
             font-weight: 600;
+            letter-spacing: 0.02em;
         }
 
         td {
-            padding: 9px 14px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            color: var(--text-secondary);
+            padding: 11px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #1e293b;
+        }
+
+        tr:nth-child(even) td {
+            background: #f8fafc;
         }
 
         tr:hover td {
-            background: rgba(255, 255, 255, 0.02);
+            background: #f1f5f9;
         }
 
         code {
             font-family: 'JetBrains Mono', monospace;
-            background: rgba(30, 41, 59, 0.8);
-            color: #38bdf8;
+            background: #e2e8f0;
+            color: #0f172a;
             padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 0.82rem;
+            border-radius: 3px;
+            font-size: 0.85rem;
+            font-weight: 500;
         }
 
-        .method-post {
-            color: #34d399;
-            font-weight: bold;
-        }
-
-        .method-get {
-            color: #60a5fa;
-            font-weight: bold;
-        }
-
-        .method-delete {
-            color: #f87171;
-            font-weight: bold;
-        }
-
-        /* Full Screen Large Diagram Box */
-        .diagram-box {
-            background: rgba(8, 14, 28, 0.98);
-            border: 1px solid rgba(59, 130, 246, 0.25);
-            border-radius: 14px;
-            padding: 8px 16px;
+        /* Layout 5: Large Full-Canvas Diagram (Pages 13, 14, 15, 17 in PDF) */
+        .diagram-canvas {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            min-height: 520px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
             display: flex;
             justify-content: center;
             align-items: center;
-            flex: 1;
-            width: 100%;
-            height: calc(100% - 45px);
-            min-height: 580px;
+            padding: 16px;
             overflow: hidden;
         }
 
-        .diagram-box .mermaid {
+        .diagram-canvas .mermaid {
             width: 100%;
             height: 100%;
             display: flex;
@@ -347,35 +414,11 @@
             align-items: center;
         }
 
-        /* Remove inline constraints and allow full scaling */
-        .diagram-box svg {
+        .diagram-canvas svg {
             width: 100% !important;
             height: 100% !important;
-            max-width: 100% !important;
-            max-height: 680px !important;
-            min-height: 540px !important;
-            display: block;
-            margin: auto;
-        }
-
-        /* Progress Bar */
-        .progress-bar {
-            height: 4px;
-            background: rgba(255, 255, 255, 0.05);
-            width: 100%;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #3b82f6, #06b6d4);
-            width: 8.3%;
-            transition: width 0.3s ease;
-        }
-
-        .key-hint {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-right: 12px;
+            max-height: 560px !important;
+            object-fit: contain;
         }
     </style>
 </head>
@@ -383,11 +426,11 @@
 <body>
 
     <header>
-        <div class="logo">
-            <span>⚡</span> Cátedra de Microservicios · Unidad 3
+        <div class="header-title">
+
+            <span class="badge">microservicios</span>
         </div>
         <div class="controls">
-            <span class="key-hint">Navegación: [ ← ] [ → ] / [ Espacio ]</span>
             <button id="prevBtn" onclick="prevSlide()">◀ Anterior</button>
             <span class="slide-counter" id="slideIndicator">01 / 12</span>
             <button id="nextBtn" onclick="nextSlide()">Siguiente ▶</button>
@@ -395,173 +438,203 @@
         </div>
     </header>
 
-    <div class="progress-bar">
-        <div class="progress-fill" id="progressFill"></div>
-    </div>
-
     <main class="presentation-container">
 
-        <!-- Slide 1: Portada -->
-        <section class="slide active lead-slide">
-            <div>
-                <span class="tag-pill">Unidad 3: Comunicación entre Servicios</span>
-                <span class="tag-pill">Propuesta de Extensión</span>
+        <!-- Slide 1: Portada (Estilo Página 1 PDF) -->
+        <section class="slide active slide-cover">
+            <!-- Geometric Atom Icon SVG -->
+            <svg class="cover-icon" viewBox="0 0 100 100" fill="none" stroke="#111827" stroke-width="4">
+                <ellipse cx="50" cy="50" rx="42" ry="18" transform="rotate(0 50 50)" />
+                <ellipse cx="50" cy="50" rx="42" ry="18" transform="rotate(60 50 50)" />
+                <ellipse cx="50" cy="50" rx="42" ry="18" transform="rotate(120 50 50)" />
+                <circle cx="50" cy="50" r="6" fill="#111827" />
+            </svg>
+            <h1>Capacidad Vertical:<br />Media Service</h1>
+            <h2>Gestor de Archivos Adjuntos y Vista Previa de Medios</h2>
+            <div class="cover-meta">
+                Arquitectura de Software 2026-2 | Benjamín Mac-Kay, Mariano Varas, Manuel Vega
             </div>
-            <h1>Capacidad Vertical: Media Service</h1>
-            <h3>Gestor de Archivos Adjuntos y Vista Previa de Medios</h3>
-            <div>
-                <span class="tag-pill">FastAPI</span>
-                <span class="tag-pill">MongoDB</span>
-                <span class="tag-pill">RabbitMQ</span>
-                <span class="tag-pill">Docker Compose</span>
-            </div>
+
         </section>
 
-        <!-- Slide 2: Problema y Contexto -->
+        <!-- Slide 2: Problema y Contexto (Estilo Página 4 PDF - Split con 01 02 03) -->
         <section class="slide">
-            <div class="slide-title">
-                <span>01. Problema de Usuario y Contexto</span>
-                <span class="badge">Diagnóstico</span>
-            </div>
-            <div class="grid-2">
-                <div class="card">
-                    <h3>🌐 Contexto de la Aplicación</h3>
-                    <ul>
-                        <li>Los canales de chat modernos (<em>Slack, Discord, Teams</em>) son <strong>centros multimedia
-                                colaborativos</strong>.</li>
-                        <li>Los equipos necesitan compartir especificaciones en PDF, capturas de pantalla de bugs y
-                            enlaces web externos.</li>
-                    </ul>
+            <svg class="deco-icon-tr" viewBox="0 0 100 100" fill="none" stroke="#111827" stroke-width="4">
+                <line x1="50" y1="10" x2="50" y2="90" />
+                <line x1="10" y1="50" x2="90" y2="50" />
+                <circle cx="50" cy="50" r="10" fill="#111827" />
+                <circle cx="50" cy="10" r="6" fill="#111827" />
+                <circle cx="50" cy="90" r="6" fill="#111827" />
+                <circle cx="10" cy="50" r="6" fill="#111827" />
+                <circle cx="90" cy="50" r="6" fill="#111827" />
+            </svg>
+
+            <h2 class="slide-heading">¿Por qué es necesario el servicio de medios?</h2>
+
+            <div class="split-layout">
+                <div class="split-media-box">
+                    <h3>Chat Multimedia</h3>
+                    <p>Los canales de chat modernos (Slack, Discord, Teams) están diseñados para lidiar con
+                        prácticamente todo tipo de archivos.</p>
                 </div>
-                <div class="card">
-                    <h3>⚠️ Limitaciones del Chat Base</h3>
-                    <ul>
-                        <li><strong>Solo texto plano:</strong> El servicio <code>messages</code> únicamente admite texto
-                            plano (máx. 4.000 chars).</li>
-                        <li><strong>Sin soporte de binarios:</strong> Imposible subir o consultar imágenes, PDFs o zips.
-                        </li>
-                        <li><strong>URLs a ciegas:</strong> Los enlaces compartidos carecen de título, descripción e
-                            imagen previa.</li>
-                        <li><strong>Falta de repositorio:</strong> No existe una galería de archivos compartidos por
-                            canal.</li>
-                    </ul>
+
+                <div class="split-items-list">
+                    <div class="numbered-item">
+                        <div class="number-box">01</div>
+                        <div class="item-content">
+                            <h3>Límite de solo texto plano</h3>
+                            <p>El servicio <code>messages</code> únicamente admite cadenas de texto plano de hasta 4.000
+                                caracteres.</p>
+                        </div>
+                    </div>
+                    <div class="numbered-item">
+                        <div class="number-box">02</div>
+                        <div class="item-content">
+                            <h3>Sin soporte de binarios</h3>
+                            <p>Imposible compartir imágenes de errores, reportes PDF o archivos adjuntos en los canales.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="numbered-item">
+                        <div class="number-box">03</div>
+                        <div class="item-content">
+                            <h3>URLs a ciegas</h3>
+                            <p>Los enlaces compartidos carecen de contexto visual (título, descripción, imagen previa
+                                OpenGraph).</p>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </section>
 
-        <!-- Slide 3: Propuesta de Valor -->
+        <!-- Slide 3: Propuesta de Valor (Estilo Página 2/5 PDF - 3 Tarjetas en Banda Oscura) -->
         <section class="slide">
-            <div class="slide-title">
-                <span>02. Propuesta de Valor y Capacidades</span>
-                <span class="badge">Solución</span>
+            <svg class="deco-icon-tr" viewBox="0 0 100 100" fill="none" stroke="#111827" stroke-width="4">
+                <circle cx="50" cy="50" r="30" />
+                <line x1="50" y1="10" x2="50" y2="90" />
+                <line x1="10" y1="50" x2="90" y2="50" />
+            </svg>
+
+            <h2 class="slide-heading">Capacidades de la Extensión</h2>
+
+            <div class="banner-container">
+                <div class="banner-card">
+                    <h3>Gestión de Adjuntos</h3>
+                    <p>Subida multipart/form-data, almacenamiento binario en volumen persistente y descarga segura por
+                        canal y usuario.</p>
+                </div>
+                <div class="banner-card">
+                    <h3>Link Previews Asíncronos</h3>
+                    <p>Detección automática de URLs en mensajes para generar tarjetas enriquecidas (OpenGraph) en
+                        background.</p>
+                </div>
+                <div class="banner-card">
+                    <h3>Galería y Cuotas</h3>
+                    <p>Consulta filtrada por tipo de medio (IMAGE, DOCUMENT, LINK) y administración de límites de
+                        almacenamiento en disco.</p>
+                </div>
             </div>
-            <div class="grid-2">
-                <div class="card">
-                    <h3>📁 1. Gestión de Archivos Adjuntos</h3>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
-                        Subida multipart, almacenamiento binario en volumen dedicado y descarga segura por canal y
-                        usuario.
-                    </p>
-                    <h3>🖼️ 2. Link Previews Asíncronos</h3>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
-                        Extracción automática y en segundo plano de tarjetas OpenGraph (*Rich Cards*) a partir de URLs
-                        en mensajes.
-                    </p>
-                </div>
-                <div class="card">
-                    <h3>🗃️ 3. Galería de Medios por Canal</h3>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
-                        Consulta estructurada con filtros por tipo de medio (<code>IMAGE</code>, <code>DOCUMENT</code>,
-                        <code>ARCHIVE</code>).
-                    </p>
-                    <h3>📊 4. Control de Cuotas de Disco</h3>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
-                        Límites de almacenamiento configurables por canal para evitar saturación de disco.
-                    </p>
-                </div>
+
+            <div class="slide-footer-note">
+                El componente propuesto aporta valor funcional respetando el principio de responsabilidad única (SRP).
             </div>
         </section>
 
-        <!-- Slide 4: Lenguaje Ubicuo -->
+        <!-- Slide 4: Lenguaje Ubicuo (Estilo Página 19/20 PDF - Tabla Académica) -->
         <section class="slide">
-            <div class="slide-title">
-                <span>03. Lenguaje Ubicuo (Glosario DDD)</span>
-                <span class="badge">Dominio</span>
+            <h2 class="slide-heading">Lenguaje Ubicuo (Glosario DDD)</h2>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 30%;">Término</th>
+                            <th>Definición en el Dominio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Archivo Adjunto (Attachment)</strong></td>
+                            <td>Recurso digital (imagen, documento) subido por un usuario y asociado a un canal.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Metadatos (Metadata)</strong></td>
+                            <td>Información descriptiva: nombre, tipo MIME, tamaño en bytes, SHA-256 y URL de descarga.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Vista Previa (Link Preview)</strong></td>
+                            <td>Tarjeta resumen (título, descripción, miniatura) extraída de una URL externa.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Categoría / Filtro (Media Category)</strong></td>
+                            <td>Clasificación para búsqueda en galería: <code>IMAGE</code>, <code>DOCUMENT</code>,
+                                <code>LINK</code>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Almacenamiento (Media Storage)</strong></td>
+                            <td>Volumen físico (<code>/media-storage</code>) donde residen los archivos binarios crudos.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cuota de Canal (Channel Quota)</strong></td>
+                            <td>Límite máximo de almacenamiento acumulado asignado a un canal.</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 28%;">Término</th>
-                        <th>Definición en el Dominio</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Archivo Adjunto (*Attachment*)</strong></td>
-                        <td>Recurso digital (imagen, documento) subido por un usuario y asociado a un canal.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Metadatos (*Metadata*)</strong></td>
-                        <td>Información descriptiva persistida: nombre, tipo MIME, tamaño, SHA-256 y URL de descarga.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><strong>Vista Previa (*Link Preview*)</strong></td>
-                        <td>Tarjeta resumen (título, descripción, miniatura) extraída de una URL compartida.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Almacenamiento (*Media Storage*)</strong></td>
-                        <td>Volumen físico (<code>/media-storage</code>) donde residen los archivos binarios crudos.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><strong>Cuota de Canal (*Channel Quota*)</strong></td>
-                        <td>Límite máximo de almacenamiento acumulado asignado a un canal.</td>
-                    </tr>
-                </tbody>
-            </table>
+
+            <div class="slide-footer-note">
+                Evans (2003): El lenguaje ubicuo estructura los conceptos compartidos por desarrolladores y expertos del
+                dominio.
+            </div>
         </section>
 
-        <!-- Slide 5: Frontera de Responsabilidad -->
+        <!-- Slide 5: Frontera de Responsabilidad (Estilo Página 6 PDF - Bounded Context) -->
         <section class="slide">
-            <div class="slide-title">
-                <span>04. Frontera de Responsabilidad (Bounded Context)</span>
-                <span class="badge">Arquitectura</span>
+            <svg class="deco-icon-tr" viewBox="0 0 100 100" fill="none" stroke="#111827" stroke-width="4">
+                <line x1="20" y1="20" x2="80" y2="80" />
+                <line x1="80" y1="20" x2="20" y2="80" />
+                <rect x="35" y="35" width="30" height="30" fill="#ffffff" stroke="#111827" />
+            </svg>
+
+            <h2 class="slide-heading">Frontera de Responsabilidad</h2>
+
+            <div class="banner-container">
+                <div class="banner-card">
+                    <h3>Dentro de Media</h3>
+                    <p>Almacenamiento binario físico, persistencia de metadatos, extracción y caché de tarjetas
+                        OpenGraph, validación de tipos MIME y cuotas de disco.</p>
+                </div>
+                <div class="banner-card">
+                    <h3>Fuera de Media (Núcleo)</h3>
+                    <p>Identidad y autenticidad (Users), salas de chat y membresía (Channels), persistencia y orden
+                        cronológico de mensajes (Messages).</p>
+                </div>
+                <div class="banner-card">
+                    <h3>Aislamiento de Datos</h3>
+                    <p>Base de datos MongoDB propia (<code>chat_media</code>). Prohibido el acceso directo a bases de
+                        datos de otros microservicios.</p>
+                </div>
             </div>
-            <div class="grid-2">
-                <div class="card">
-                    <h3>📦 Dentro de `media`</h3>
-                    <ul>
-                        <li>Almacenamiento binario físico y metadatos de archivos.</li>
-                        <li>Extracción y caché de metadatos OpenGraph de URLs.</li>
-                        <li>Control de cuotas y validación de tipos MIME.</li>
-                        <li>Base de datos propia: <strong><code>chat_media</code></strong>.</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3>🤝 Fuera de `media` (Delegado al Núcleo)</h3>
-                    <ul>
-                        <li>Identidad y autenticidad $\rightarrow$ <strong><code>users</code></strong>.</li>
-                        <li>Salas de chat y membresía $\rightarrow$ <strong><code>channels</code></strong>.</li>
-                        <li>Secuencia y texto de mensajes $\rightarrow$ <strong><code>messages</code></strong>.</li>
-                        <li><strong>Regla:</strong> Aislamiento total de BD; comunicación vía REST y RabbitMQ.</li>
-                    </ul>
-                </div>
+
+            <div class="slide-footer-note">
+                Newman (2021): Los límites del microservicio deben alinearse con los Bounded Contexts del negocio.
             </div>
         </section>
 
-        <!-- Slide 6: Diagrama de Arquitectura General (Maximized) -->
-        <section class="slide diagram-slide">
-            <div class="slide-title">
-                <span>05. Diagrama de Arquitectura General</span>
-                <span class="badge">Mermaid</span>
-            </div>
-            <div class="diagram-box">
+        <!-- Slide 6: Arquitectura de Microservicios (Estilo Páginas 13/14/15 PDF - Diagrama Completo) -->
+        <section class="slide">
+            <h2 class="slide-heading">Arquitectura del Sistema</h2>
+
+            <div class="diagram-canvas">
                 <div class="mermaid">
                     flowchart TD
                     User["👤 Usuario del Chat"]
 
-                    subgraph BaseChat["Núcleo del Chat"]
+                    subgraph BaseChat["Núcleo del Chat (Base)"]
                     direction TB
                     UsersSvc["Users Service (:8001)"]
                     UsersDB[("MongoDB<br />chat_users")]
@@ -576,10 +649,10 @@
                     MessagesSvc --- MessagesDB
                     end
 
-                    Broker["🐰 RabbitMQ Broker<br />Exchange: chat"]
+                    Broker["🐰 RabbitMQ Broker<br />Exchange: chat (topic)"]
                     ExtWeb["🌐 Sitios Web Externos<br />OpenGraph"]
 
-                    subgraph MediaExtension["Capacidad Vertical: Media"]
+                    subgraph MediaExtension["Capacidad Vertical: Media (Extensión)"]
                     direction TB
                     MediaSvc["Media Service (:8004)"]
                     MediaDB[("MongoDB<br />chat_media")]
@@ -591,179 +664,215 @@
                     User -->|HTTP REST| UsersSvc
                     User -->|HTTP REST| ChannelsSvc
                     User -->|HTTP REST| MessagesSvc
-                    User -->|HTTP REST Upload Download| MediaSvc
+                    User -->|HTTP REST| MediaSvc
 
                     MessagesSvc -->|Publica chat.message.created| Broker
                     Broker -->|Consume chat.message.created| MediaSvc
-                    MediaSvc -->|Publica attachment link_preview| Broker
-                    MediaSvc -.->|Valida usuario canal| UsersSvc
-                    MediaSvc -.->|Valida usuario canal| ChannelsSvc
+                    MediaSvc -->|Publica attachment.* / link_preview.*| Broker
+                    MediaSvc -.->|Valida usuario / canal| UsersSvc
+                    MediaSvc -.->|Valida usuario / canal| ChannelsSvc
                     MediaSvc -.->|Scrape OG tags| ExtWeb
                 </div>
             </div>
+
+            <div class="slide-footer-note">
+                Diagrama de Contenedores C4: Integración del núcleo con el servicio Media mediante APIs REST y eventos
+                AMQP.
+            </div>
         </section>
 
-        <!-- Slide 7: Contratos REST -->
+        <!-- Slide 7: Contratos REST (Estilo Página 11 PDF - Operaciones REST) -->
         <section class="slide">
-            <div class="slide-title">
-                <span>06. Contratos de Comunicación: APIs REST</span>
-                <span class="badge">Puerto 8004</span>
+            <h2 class="slide-heading">Contratos de Comunicación: APIs REST</h2>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 12%;">Método</th>
+                            <th style="width: 42%;">Ruta (Puerto 8004)</th>
+                            <th style="width: 10%;">Código</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>POST</strong></td>
+                            <td><code>/api/v1/channels/{id}/attachments</code></td>
+                            <td><code>201</code></td>
+                            <td>Sube archivo adjunto (multipart/form-data).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>GET</strong></td>
+                            <td><code>/api/v1/channels/{id}/attachments</code></td>
+                            <td><code>200</code></td>
+                            <td>Lista galería del canal (filtros: <code>?category=IMAGE|DOCUMENT|LINK</code>).
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>GET</strong></td>
+                            <td><code>/api/v1/attachments/{id}/download</code></td>
+                            <td><code>200</code></td>
+                            <td>Descarga stream binario del archivo.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>DELETE</strong></td>
+                            <td><code>/api/v1/attachments/{id}</code></td>
+                            <td><code>204</code></td>
+                            <td>Elimina archivo y libera cuota del canal.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>GET</strong></td>
+                            <td><code>/api/v1/links/preview?url=...</code></td>
+                            <td><code>200</code></td>
+                            <td>Consulta tarjeta OpenGraph en caché.</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 10%;">Método</th>
-                        <th style="width: 42%;">Ruta</th>
-                        <th style="width: 12%;">Código</th>
-                        <th>Descripción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><span class="method-post">POST</span></td>
-                        <td><code>/api/v1/channels/{id}/attachments</code></td>
-                        <td><code>201</code></td>
-                        <td>Sube archivo adjunto (multipart/form-data).</td>
-                    </tr>
-                    <tr>
-                        <td><span class="method-get">GET</span></td>
-                        <td><code>/api/v1/channels/{id}/attachments</code></td>
-                        <td><code>200</code></td>
-                        <td>Lista galería de archivos del canal (con filtros).</td>
-                    </tr>
-                    <tr>
-                        <td><span class="method-get">GET</span></td>
-                        <td><code>/api/v1/attachments/{id}/download</code></td>
-                        <td><code>200</code></td>
-                        <td>Descarga el archivo binario (stream).</td>
-                    </tr>
-                    <tr>
-                        <td><span class="method-delete">DELETE</span></td>
-                        <td><code>/api/v1/attachments/{id}</code></td>
-                        <td><code>204</code></td>
-                        <td>Elimina archivo y libera cuota del canal.</td>
-                    </tr>
-                    <tr>
-                        <td><span class="method-get">GET</span></td>
-                        <td><code>/api/v1/links/preview?url=...</code></td>
-                        <td><code>200</code></td>
-                        <td>Consulta tarjeta OpenGraph en caché.</td>
-                    </tr>
-                </tbody>
-            </table>
+
+            <div class="slide-footer-note">
+                Después de ejecutar una operación REST, los componentes ejecutan llamadas sin estado (Stateless
+                Request-Response).
+            </div>
         </section>
 
-        <!-- Slide 8: Eventos RabbitMQ -->
+        <!-- Slide 8: Eventos Asíncronos (Estilo Página 8/14 PDF - Split con 01 02 03) -->
         <section class="slide">
-            <div class="slide-title">
-                <span>07. Contratos de Comunicación: Eventos Asíncronos</span>
-                <span class="badge">RabbitMQ</span>
+            <h2 class="slide-heading">Arquitectura Basada en Eventos</h2>
+
+            <div class="split-layout">
+                <div class="split-media-box">
+                    <h3>Broker RabbitMQ</h3>
+                    <p>Exchange: <code>chat</code><br />Tipo: <code>topic</code></p>
+                    <p style="margin-top: 10px; font-size: 0.85rem;">Convención de
+                        nombres:<br /><code>entidad.id.acción</code></p>
+                </div>
+
+                <div class="split-items-list">
+                    <div class="numbered-item">
+                        <div class="number-box">01</div>
+                        <div class="item-content">
+                            <h3>Consumo: <code>chat.message.created</code></h3>
+                            <p>Inspecciona el texto con Regex en background. Si detecta URLs, inicia scraping de
+                                OpenGraph sin bloquear al chat.</p>
+                        </div>
+                    </div>
+                    <div class="numbered-item">
+                        <div class="number-box">02</div>
+                        <div class="item-content">
+                            <h3>Publicación: <code>attachment.*</code></h3>
+                            <p>Emite <code>attachment.{id}.uploaded</code> y <code>attachment.{id}.deleted</code> para
+                                auditoría y eventos de canal.</p>
+                        </div>
+                    </div>
+                    <div class="numbered-item">
+                        <div class="number-box">03</div>
+                        <div class="item-content">
+                            <h3>Publicación: <code>link_preview.*</code></h3>
+                            <p>Emite <code>link_preview.{id}.generated</code> cuando la vista previa web queda lista en
+                                caché.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="grid-2">
-                <div class="card">
-                    <h3>📥 Eventos Consumidos</h3>
-                    <ul>
-                        <li><code>chat.message.created</code>:
-                            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">
-                                Inspecciona el texto con Regex. Si contiene URLs, dispara scraping en segundo plano de
-                                OpenGraph sin bloquear al chat.
-                            </p>
-                        </li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3>📤 Eventos Publicados (entidad.id.acción)</h3>
-                    <ul>
-                        <li><code>attachment.{id}.uploaded</code>: Notifica subida exitosa.</li>
-                        <li><code>attachment.{id}.deleted</code>: Notifica eliminación de archivo.</li>
-                        <li><code>link_preview.{id}.generated</code>: Notifica que la tarjeta de previsualización está
-                            lista en caché.</li>
-                    </ul>
-                </div>
+
+            <div class="slide-footer-note">
+                La comunicación asíncrona mediante broker permite desacoplamiento temporal y alta tolerancia a fallos.
             </div>
         </section>
 
-        <!-- Slide 9: Justificación de Patrones -->
+        <!-- Slide 9: Justificación de Patrones (Estilo Página 19 PDF - Síncrono vs Asíncrono) -->
         <section class="slide">
-            <div class="slide-title">
-                <span>08. Justificación de Patrones de Comunicación</span>
-                <span class="badge">Decisiones de Diseño</span>
+            <h2 class="slide-heading">Sincrónico vs Asíncrono</h2>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 50%;">Patrón Síncrono (REST)</th>
+                            <th style="width: 50%;">Patrón Asíncrono (Event-Driven AMQP)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Casos:</strong> Subida de archivos, descarga de binarios y validación de
+                                usuarios/canales.</td>
+                            <td><strong>Casos:</strong> Detección de URLs y scraping de metadatos OpenGraph.</td>
+                        </tr>
+                        <tr>
+                            <td>El cliente requiere <strong>confirmación inmediata</strong> y transferencia directa del
+                                stream.</td>
+                            <td>Sitios web externos tienen <strong>latencia impredecible</strong> o caídas no
+                                controladas.</td>
+                        </tr>
+                        <tr>
+                            <td>Produce acoplamiento temporal aceptable en operaciones inmediatas.</td>
+                            <td>Garantiza <strong>cero bloqueo</strong> en el envío de mensajes de texto del chat.</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="grid-2">
-                <div class="card">
-                    <h3>🛑 Sincrónico Request-Response (REST)</h3>
-                    <p style="color: #93c5fd; font-size: 0.85rem; margin-bottom: 8px;"><strong>Subida, descarga y
-                            validación directa</strong></p>
-                    <ul>
-                        <li>El usuario necesita confirmación inmediata del archivo cargado.</li>
-                        <li>Transferencia directa y eficiente de streams binarios hacia el cliente.</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3>📨 Asincrónico Event-Driven (RabbitMQ)</h3>
-                    <p style="color: #93c5fd; font-size: 0.85rem; margin-bottom: 8px;"><strong>Detección y scraping de
-                            URLs externas</strong></p>
-                    <ul>
-                        <li>El scraping web tiene <strong>latencia impredecible</strong> (sitios caídos o lentos).</li>
-                        <li>El envío de mensajes de chat <strong>nunca se bloquea</strong> ni se degrada.</li>
-                    </ul>
-                </div>
+
+            <div class="slide-footer-note">
+                Tanenbaum et al. (2016): Los sistemas distribuidos combinan estilos síncronos y asíncronos según el
+                perfil de latencia.
             </div>
         </section>
 
-        <!-- Slide 10: Flujo Punta a Punta 1 (Maximized) -->
-        <section class="slide diagram-slide">
-            <div class="slide-title">
-                <span>09. Flujo Punta a Punta 1: Subida y Descarga de Archivos</span>
-                <span class="badge">Secuencia</span>
-            </div>
-            <div class="diagram-box">
+        <!-- Slide 10: Flujo Punta a Punta 1 (Estilo Página 10/14 PDF - Secuencia Archivos) -->
+        <section class="slide">
+            <h2 class="slide-heading">Flujo de Usuario: Subida y Descarga</h2>
+
+            <div class="diagram-canvas">
                 <div class="mermaid">
                     sequenceDiagram
                     autonumber
-                    actor Alice as Usuario A (Alice)
-                    actor Bob as Usuario B (Bob)
+                    actor Benjamin as Benjamín
+                    actor Manuel as Manuel
                     participant Channels as Channels Service (:8002)
                     participant Media as Media Service (:8004)
                     participant Storage as Media Storage & DB
                     participant Broker as RabbitMQ
 
-                    Alice->>Media: POST /api/v1/channels/ch-1/attachments (file: doc.pdf, uploader: u-1)
+                    Benjamin->>Media: POST /api/v1/channels/ch-1/attachments (file: doc.pdf, uploader: benja)
                     Media->>Channels: GET /api/v1/channels/ch-1 (Valida existencia del canal)
                     Channels-->>Media: 200 OK
                     Media->>Storage: Guarda binario en disco y metadatos en MongoDB
                     Media->>Broker: Publica attachment.att-1.uploaded
-                    Media-->>Alice: 201 Created (Metadatos + URL descarga)
+                    Media-->>Benjamin: 201 Created (Metadatos + URL descarga)
 
-                    Bob->>Media: GET /api/v1/channels/ch-1/attachments
-                    Media-->>Bob: 200 OK (Lista de archivos con IDs y URLs)
+                    Manuel->>Media: GET /api/v1/channels/ch-1/attachments
+                    Manuel-->>Media: 200 OK (Lista de archivos con IDs y URLs)
 
-                    Bob->>Media: GET /api/v1/attachments/att-1/download
-                    Media-->>Bob: 200 OK (Stream binario application/pdf)
+                    Manuel->>Media: GET /api/v1/attachments/att-1/download
+                    Manuel-->>Media: 200 OK (Stream binario application/pdf)
                 </div>
+            </div>
+
+            <div class="slide-footer-note">
+                Flujo demostrable 1: Subida de archivo por Benjamín y descarga inmediata por Manuel en el canal.
             </div>
         </section>
 
-        <!-- Slide 11: Flujo Punta a Punta 2 (Maximized) -->
-        <section class="slide diagram-slide">
-            <div class="slide-title">
-                <span>10. Flujo Punta a Punta 2: Link Previews Asíncronos</span>
-                <span class="badge">Secuencia</span>
-            </div>
-            <div class="diagram-box">
+        <!-- Slide 11: Flujo Punta a Punta 2 (Estilo Página 10/14 PDF - Secuencia Previews) -->
+        <section class="slide">
+            <h2 class="slide-heading">Flujo de Usuario: Link Previews</h2>
+
+            <div class="diagram-canvas">
                 <div class="mermaid">
                     sequenceDiagram
                     autonumber
-                    actor Alice as Usuario A (Alice)
-                    actor Bob as Usuario B (Bob)
+                    actor Benjamin as Benjamín
+                    actor Manuel as Manuel
                     participant Messages as Messages Service (:8003)
                     participant Broker as RabbitMQ
                     participant Media as Media Service (:8004)
                     participant ExtWeb as Sitio Web Externo
 
-                    Alice->>Messages: POST /api/v1/channels/ch-1/messages (Mensaje con URL)
+                    Benjamin->>Messages: POST /api/v1/channels/ch-1/messages (Mensaje con URL)
                     Messages->>Broker: Publica chat.message.created
-                    Messages-->>Alice: 201 Created
+                    Messages-->>Benjamin: 201 Created
 
                     Broker-->>Media: Consume chat.message.created
                     Note over Media: Extrae URL mediante Regex en background
@@ -772,84 +881,48 @@
                     Media->>Media: Guarda tarjeta en DB chat_media (Caché)
                     Media->>Broker: Publica link_preview.lp-1.generated
 
-                    Bob->>Media: GET /api/v1/links/preview (Consulta URL)
-                    Media-->>Bob: 200 OK (Titulo e imagen de portada)
+                    Manuel->>Media: GET /api/v1/links/preview (Consulta URL)
+                    Media-->>Manuel: 200 OK (Titulo e imagen de portada)
                 </div>
             </div>
-        </section>
 
-        <!-- Slide 12: Resumen Ejecutivo -->
-        <section class="slide lead-slide">
-            <h1>🏆 Resumen Ejecutivo</h1>
-            <div style="max-width: 850px; text-align: left; margin: 20px auto;">
-                <ul>
-                    <li><strong>Valor agregado:</strong> Convierte el chat base en una herramienta multimedia completa y
-                        moderna.</li>
-                    <li><strong>Autonomía:</strong> El microservicio <code>media</code> posee sus propios datos
-                        (<code>chat_media</code>) y escala independientemente.</li>
-                    <li><strong>Desacoplamiento:</strong> Comunicación asíncrona no bloqueante frente a dependencias
-                        externas lentas.</li>
-                    <li><strong>Demostrabilidad:</strong> Flujos visuales e interactivos listos para presentar al final
-                        del curso.</li>
-                </ul>
+            <div class="slide-footer-note">
+                Flujo demostrable 2: Enriquecimiento automático de mensajes con enlaces externos compartido por Benjamín
+                y visualizado por Manuel.
             </div>
         </section>
-
     </main>
 
     <script>
+        // Mermaid Configuration with clean styling
         mermaid.initialize({
             startOnLoad: false,
-            theme: 'dark',
+            theme: 'neutral',
             securityLevel: 'loose',
-            fontSize: 18,
-            fontFamily: 'Outfit, Inter, sans-serif',
+            fontSize: 16,
+            fontFamily: 'Inter, system-ui, sans-serif',
             flowchart: {
                 curve: 'basis',
                 useMaxWidth: true,
                 htmlLabels: true,
-                nodeSpacing: 55,
-                rankSpacing: 55
+                nodeSpacing: 50,
+                rankSpacing: 50
             },
             sequence: {
                 useMaxWidth: true,
                 actorFontSize: 16,
-                messageFontSize: 15,
-                noteFontSize: 14,
-                actorMargin: 60,
-                messageMargin: 40
+                messageFontSize: 14,
+                noteFontSize: 13,
+                actorMargin: 55,
+                messageMargin: 35
             }
         });
 
-        // Safe async render with SVG size override
         document.addEventListener('DOMContentLoaded', async () => {
             try {
                 await mermaid.run();
-
-                // Remove hardcoded max-width from SVGs so they take 100% of the slide
-                setTimeout(() => {
-                    document.querySelectorAll('.diagram-box svg').forEach(svg => {
-                        svg.style.maxWidth = '100%';
-                        svg.style.width = '100%';
-                        svg.style.height = '100%';
-                        const parent = svg.parentElement;
-                        if (parent) {
-                            parent.style.maxWidth = '100%';
-                            parent.style.width = '100%';
-                            parent.style.height = '100%';
-                        }
-                    });
-                }, 100);
             } catch (err) {
-                console.warn("Mermaid auto-run issue, retrying individually:", err);
-                const nodes = document.querySelectorAll('.mermaid');
-                for (let i = 0; i < nodes.length; i++) {
-                    try {
-                        await mermaid.init(undefined, nodes[i]);
-                    } catch (e) {
-                        console.error("Failed to render mermaid node:", nodes[i], e);
-                    }
-                }
+                console.warn("Mermaid execution:", err);
             }
         });
 
@@ -862,8 +935,6 @@
             });
             document.getElementById('slideIndicator').textContent =
                 `${String(currentSlide + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
-            document.getElementById('progressFill').style.width =
-                `${((currentSlide + 1) / slides.length) * 100}%`;
         }
 
         function nextSlide() {
