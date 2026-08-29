@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capacidad Vertical: Media Service - Presentación</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #080d1a;
+            --bg-card: rgba(15, 23, 42, 0.95);
+            --border-card: rgba(59, 130, 246, 0.28);
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --accent-indigo: #6366f1;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.2) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.2) 0px, transparent 50%);
+        }
+
+        /* Top Header */
+        header {
+            padding: 12px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(10, 15, 29, 0.8);
+            backdrop-filter: blur(12px);
+            z-index: 10;
+        }
+
+        .logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        button {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            background: rgba(59, 130, 246, 0.3);
+            border-color: var(--accent-blue);
+        }
+
+        .slide-counter {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            color: var(--accent-cyan);
+            padding: 0 8px;
+            font-weight: 600;
+        }
+
+        /* Slide Container */
+        .presentation-container {
+            flex: 1;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px 24px;
+        }
+
+        /* Slide Layout */
+        .slide {
+            position: absolute;
+            width: 95%;
+            max-width: 1350px;
+            height: 90%;
+            max-height: 800px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 20px;
+            padding: 32px 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(16px);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: scale(0.98);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+            z-index: 1;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: scale(1);
+            z-index: 5;
+        }
+
+        /* Specialized Large Diagram Slide */
+        .slide.diagram-slide {
+            padding: 20px 30px;
+            overflow: hidden;
+        }
+
+        .slide.diagram-slide .slide-title {
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .slide-title {
+            font-size: 1.65rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid rgba(59, 130, 246, 0.3);
+            padding-bottom: 10px;
+            flex-shrink: 0;
+        }
+
+        .slide-title span.badge {
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(59, 130, 246, 0.4);
+        }
+
+        /* Lead Slide (Portada) */
+        .lead-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .lead-slide h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #60a5fa, #38bdf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .lead-slide h3 {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-bottom: 32px;
+        }
+
+        .tag-pill {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: #a5b4fc;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin: 4px;
+        }
+
+        /* Grids & Cards */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .card h3 {
+            font-size: 1.15rem;
+            color: #60a5fa;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 10px;
+            font-size: 0.92rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+
+        li::before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            color: var(--accent-cyan);
+            font-size: 1.1rem;
+        }
+
+        li strong {
+            color: #ffffff;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            margin-top: 10px;
+        }
+
+        th {
+            background: rgba(30, 58, 138, 0.4);
+            color: #93c5fd;
+            text-align: left;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border-card);
+            font-weight: 600;
+        }
+
+        td {
+            padding: 9px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(30, 41, 59, 0.8);
+            color: #38bdf8;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.82rem;
+        }
+
+        .method-post { color: #34d399; font-weight: bold; }
+        .method-get { color: #60a5fa; font-weight: bold; }
+        .method-delete { color: #f87171; font-weight: bold; }
+
+        /* Full Screen Large Diagram Box */
+        .diagram-box {
+            background: rgba(10, 15, 29, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            width: 100%;
+            height: calc(100% - 50px);
+            min-height: 520px;
+            overflow: auto;
+        }
+
+        .diagram-box svg {
+            width: 100% !important;
+            height: auto !important;
+            max-height: 540px !important;
+            display: block;
+            margin: auto;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #06b6d4);
+            width: 8.3%;
+            transition: width 0.3s ease;
+        }
+
+        .key-hint {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-right: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <span>⚡</span> Cátedra de Microservicios · Unidad 3
+        </div>
+        <div class="controls">
+            <span class="key-hint">Navegación: [ ← ] [ → ] / [ Espacio ]</span>
+            <button id="prevBtn" onclick="prevSlide()">◀ Anterior</button>
+            <span class="slide-counter" id="slideIndicator">01 / 12</span>
+            <button id="nextBtn" onclick="nextSlide()">Siguiente ▶</button>
+            <button onclick="toggleFullScreen()">⛶ Pantalla Completa</button>
+        </div>
+    </header>
+
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <main class="presentation-container">
+
+        <!-- Slide 1: Portada -->
+        <section class="slide active lead-slide">
+            <div>
+                <span class="tag-pill">Unidad 3: Comunicación entre Servicios</span>
+                <span class="tag-pill">Propuesta de Extensión</span>
+            </div>
+            <h1>Capacidad Vertical: Media Service</h1>
+            <h3>Gestor de Archivos Adjuntos y Vista Previa de Medios</h3>
+            <div>
+                <span class="tag-pill">FastAPI</span>
+                <span class="tag-pill">MongoDB</span>
+                <span class="tag-pill">RabbitMQ</span>
+                <span class="tag-pill">Docker Compose</span>
+            </div>
+        </section>
+
+        <!-- Slide 2: Problema y Contexto -->
+        <section class="slide">
+            <div class="slide-title">
+                <span>01. Problema de Usuario y Contexto</span>
+                <span class="badge">Diagnóstico</span>
+            </div>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>🌐 Contexto de la Aplicación</h3>
+                    <ul>
+                        <li>Los canales de chat modernos (<em>Slack, Discord, Teams</em>) son <strong>centros multimedia colaborativos</strong>.</li>
+                        <li>Los equipos necesitan compartir especificaciones en PDF, capturas de pantalla de bugs y enlaces web externos.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>⚠️ Limitaciones del Chat Base</h3>
+                    <ul>
+                        <li><strong>Solo texto plano:</strong> El servicio <code>messages</code> únicamente admite texto plano (máx. 4.000 chars).</li>
+                        <li><strong>Sin soporte de binarios:</strong> Imposible subir o consultar imágenes, PDFs o zips.</li>
+                        <li><strong>URLs a ciegas:</strong> Los enlaces compartidos carecen de título, descripción e imagen previa.</li>
+                        <li><strong>Falta de repositorio:</strong> No existe una galería de archivos compartidos por canal.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: Propuesta de Valor -->
+        <section class="slide">
+            <div class="slide-title">
+                <span>02. Propuesta de Valor y Capacidades</span>
+                <span class="badge">Solución</span>
+            </div>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>📁 1. Gestión de Archivos Adjuntos</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
+                        Subida multipart, almacenamiento binario en volumen dedicado y descarga segura por canal y usuario.
+                    </p>
+                    <h3>🖼️ 2. Link Previews Asíncronos</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                        Extracción automática y en segundo plano de tarjetas OpenGraph (*Rich Cards*) a partir de URLs en mensajes.
+                    </p>
+                </div>
+                <div class="card">
+                    <h3>🗃️ 3. Galería de Medios por Canal</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
+                        Consulta estructurada con filtros por tipo de medio (<code>IMAGE</code>, <code>DOCUMENT</code>, <code>ARCHIVE</code>).
+                    </p>
+                    <h3>📊 4. Control de Cuotas de Disco</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                        Límites de almacenamiento configurables por canal para evitar saturación de disco.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Lenguaje Ubicuo -->
+        <section class="slide">
+            <div class="slide-title">
+                <span>03. Lenguaje Ubicuo (Glosario DDD)</span>
+                <span class="badge">Dominio</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 28%;">Término</th>
+                        <th>Definición en el Dominio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Archivo Adjunto (*Attachment*)</strong></td>
+                        <td>Recurso digital (imagen, documento) subido por un usuario y asociado a un canal.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Metadatos (*Metadata*)</strong></td>
+                        <td>Información descriptiva persistida: nombre, tipo MIME, tamaño, SHA-256 y URL de descarga.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Vista Previa (*Link Preview*)</strong></td>
+                        <td>Tarjeta resumen (título, descripción, miniatura) extraída de una URL compartida.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Almacenamiento (*Media Storage*)</strong></td>
+                        <td>Volumen físico (<code>/media-storage</code>) donde residen los archivos binarios crudos.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cuota de Canal (*Channel Quota*)</strong></td>
+                        <td>Límite máximo de almacenamiento acumulado asignado a un canal.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Slide 5: Frontera de Responsabilidad -->
+        <section class="slide">
+            <div class="slide-title">
+                <span>04. Frontera de Responsabilidad (Bounded Context)</span>
+                <span class="badge">Arquitectura</span>
+            </div>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>📦 Dentro de `media`</h3>
+                    <ul>
+                        <li>Almacenamiento binario físico y metadatos de archivos.</li>
+                        <li>Extracción y caché de metadatos OpenGraph de URLs.</li>
+                        <li>Control de cuotas y validación de tipos MIME.</li>
+                        <li>Base de datos propia: <strong><code>chat_media</code></strong>.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>🤝 Fuera de `media` (Delegado al Núcleo)</h3>
+                    <ul>
+                        <li>Identidad y autenticidad $\rightarrow$ <strong><code>users</code></strong>.</li>
+                        <li>Salas de chat y membresía $\rightarrow$ <strong><code>channels</code></strong>.</li>
+                        <li>Secuencia y texto de mensajes $\rightarrow$ <strong><code>messages</code></strong>.</li>
+                        <li><strong>Regla:</strong> Aislamiento total de BD; comunicación vía REST y RabbitMQ.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: Diagrama de Arquitectura General (Maximized & Robust Syntax) -->
+        <section class="slide diagram-slide">
+            <div class="slide-title">
+                <span>05. Diagrama de Arquitectura General</span>
+                <span class="badge">C4 Containers</span>
+            </div>
+            <div class="diagram-box">
+                <div class="mermaid">
+flowchart TD
+    User["👤 Usuario del Chat"]
+
+    subgraph BaseChat["Núcleo del Chat"]
+        UsersSvc["Users Service (:8001)"]
+        UsersDB[("MongoDB<br/>chat_users")]
+        UsersSvc --- UsersDB
+
+        ChannelsSvc["Channels Service (:8002)"]
+        ChannelsDB[("MongoDB<br/>chat_channels")]
+        ChannelsSvc --- ChannelsDB
+
+        MessagesSvc["Messages Service (:8003)"]
+        MessagesDB[("MongoDB<br/>chat_messages")]
+        MessagesSvc --- MessagesDB
+    end
+
+    Broker["🐰 RabbitMQ Broker<br/>Exchange: chat"]
+    ExtWeb["🌐 Sitios Web Externos<br/>OpenGraph"]
+
+    subgraph MediaExtension["Capacidad Vertical: Media"]
+        MediaSvc["Media Service (:8004)"]
+        MediaDB[("MongoDB<br/>chat_media")]
+        MediaStore[("Volumen Docker<br/>media-storage")]
+        MediaSvc --- MediaDB
+        MediaSvc --- MediaStore
+    end
+
+    User -->|HTTP REST| UsersSvc
+    User -->|HTTP REST| ChannelsSvc
+    User -->|HTTP REST| MessagesSvc
+    User -->|HTTP REST Upload Download| MediaSvc
+
+    MessagesSvc -->|Publica chat.message.created| Broker
+    Broker -->|Consume chat.message.created| MediaSvc
+    MediaSvc -->|Publica attachment link_preview| Broker
+    MediaSvc -.->|Valida usuario canal| UsersSvc
+    MediaSvc -.->|Valida usuario canal| ChannelsSvc
+    MediaSvc -.->|Scrape OG tags| ExtWeb
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Contratos REST -->
+        <section class="slide">
+            <div class="slide-title">
+                <span>06. Contratos de Comunicación: APIs REST</span>
+                <span class="badge">Puerto 8004</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">Método</th>
+                        <th style="width: 42%;">Ruta</th>
+                        <th style="width: 12%;">Código</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="method-post">POST</span></td>
+                        <td><code>/api/v1/channels/{id}/attachments</code></td>
+                        <td><code>201</code></td>
+                        <td>Sube archivo adjunto (multipart/form-data).</td>
+                    </tr>
+                    <tr>
+                        <td><span class="method-get">GET</span></td>
+                        <td><code>/api/v1/channels/{id}/attachments</code></td>
+                        <td><code>200</code></td>
+                        <td>Lista galería de archivos del canal (con filtros).</td>
+                    </tr>
+                    <tr>
+                        <td><span class="method-get">GET</span></td>
+                        <td><code>/api/v1/attachments/{id}/download</code></td>
+                        <td><code>200</code></td>
+                        <td>Descarga el archivo binario (stream).</td>
+                    </tr>
+                    <tr>
+                        <td><span class="method-delete">DELETE</span></td>
+                        <td><code>/api/v1/attachments/{id}</code></td>
+                        <td><code>204</code></td>
+                        <td>Elimina archivo y libera cuota del canal.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="method-get">GET</span></td>
+                        <td><code>/api/v1/links/preview?url=...</code></td>
+                        <td><code>200</code></td>
+                        <td>Consulta tarjeta OpenGraph en caché.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Slide 8: Eventos RabbitMQ -->
+        <section class="slide">
+            <div class="slide-title">
+                <span>07. Contratos de Comunicación: Eventos Asíncronos</span>
+                <span class="badge">RabbitMQ</span>
+            </div>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>📥 Eventos Consumidos</h3>
+                    <ul>
+                        <li><code>chat.message.created</code>:
+                            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">
+                                Inspecciona el texto con Regex. Si contiene URLs, dispara scraping en segundo plano de OpenGraph sin bloquear al chat.
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>📤 Eventos Publicados (entidad.id.acción)</h3>
+                    <ul>
+                        <li><code>attachment.{id}.uploaded</code>: Notifica subida exitosa.</li>
+                        <li><code>attachment.{id}.deleted</code>: Notifica eliminación de archivo.</li>
+                        <li><code>link_preview.{id}.generated</code>: Notifica que la tarjeta de previsualización está lista en caché.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 9: Justificación de Patrones -->
+        <section class="slide">
+            <div class="slide-title">
+                <span>08. Justificación de Patrones de Comunicación</span>
+                <span class="badge">Decisiones de Diseño</span>
+            </div>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>🛑 Sincrónico Request-Response (REST)</h3>
+                    <p style="color: #93c5fd; font-size: 0.85rem; margin-bottom: 8px;"><strong>Subida, descarga y validación directa</strong></p>
+                    <ul>
+                        <li>El usuario necesita confirmación inmediata del archivo cargado.</li>
+                        <li>Transferencia directa y eficiente de streams binarios hacia el cliente.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>📨 Asincrónico Event-Driven (RabbitMQ)</h3>
+                    <p style="color: #93c5fd; font-size: 0.85rem; margin-bottom: 8px;"><strong>Detección y scraping de URLs externas</strong></p>
+                    <ul>
+                        <li>El scraping web tiene <strong>latencia impredecible</strong> (sitios caídos o lentos).</li>
+                        <li>El envío de mensajes de chat <strong>nunca se bloquea</strong> ni se degrada.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 10: Flujo Punta a Punta 1 (Maximized) -->
+        <section class="slide diagram-slide">
+            <div class="slide-title">
+                <span>09. Flujo Punta a Punta 1: Subida y Descarga de Archivos</span>
+                <span class="badge">Secuencia</span>
+            </div>
+            <div class="diagram-box">
+                <div class="mermaid">
+sequenceDiagram
+    autonumber
+    actor Alice as Usuario A (Alice)
+    actor Bob as Usuario B (Bob)
+    participant Channels as Channels Service (:8002)
+    participant Media as Media Service (:8004)
+    participant Storage as Media Storage & DB
+    participant Broker as RabbitMQ
+
+    Alice->>Media: POST /api/v1/channels/ch-1/attachments (file: doc.pdf, uploader: u-1)
+    Media->>Channels: GET /api/v1/channels/ch-1 (Valida existencia del canal)
+    Channels-->>Media: 200 OK
+    Media->>Storage: Guarda binario en disco y metadatos en MongoDB
+    Media->>Broker: Publica attachment.att-1.uploaded
+    Media-->>Alice: 201 Created (Metadatos + URL descarga)
+
+    Bob->>Media: GET /api/v1/channels/ch-1/attachments
+    Media-->>Bob: 200 OK (Lista de archivos con IDs y URLs)
+
+    Bob->>Media: GET /api/v1/attachments/att-1/download
+    Media-->>Bob: 200 OK (Stream binario application/pdf)
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 11: Flujo Punta a Punta 2 (Maximized) -->
+        <section class="slide diagram-slide">
+            <div class="slide-title">
+                <span>10. Flujo Punta a Punta 2: Link Previews Asíncronos</span>
+                <span class="badge">Secuencia</span>
+            </div>
+            <div class="diagram-box">
+                <div class="mermaid">
+sequenceDiagram
+    autonumber
+    actor Alice as Usuario A (Alice)
+    actor Bob as Usuario B (Bob)
+    participant Messages as Messages Service (:8003)
+    participant Broker as RabbitMQ
+    participant Media as Media Service (:8004)
+    participant ExtWeb as Sitio Web Externo
+
+    Alice->>Messages: POST /api/v1/channels/ch-1/messages (Mensaje con URL)
+    Messages->>Broker: Publica chat.message.created
+    Messages-->>Alice: 201 Created
+
+    Broker-->>Media: Consume chat.message.created
+    Note over Media: Extrae URL mediante Regex en background
+    Media->>ExtWeb: GET URL externa (Scrape OpenGraph Tags)
+    ExtWeb-->>Media: 200 OK (og:title, og:image, og:description)
+    Media->>Media: Guarda tarjeta en DB chat_media (Caché)
+    Media->>Broker: Publica link_preview.lp-1.generated
+
+    Bob->>Media: GET /api/v1/links/preview (Consulta URL)
+    Media-->>Bob: 200 OK (Titulo e imagen de portada)
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 12: Resumen Ejecutivo -->
+        <section class="slide lead-slide">
+            <h1>🏆 Resumen Ejecutivo</h1>
+            <div style="max-width: 850px; text-align: left; margin: 20px auto;">
+                <ul>
+                    <li><strong>Valor agregado:</strong> Convierte el chat base en una herramienta multimedia completa y moderna.</li>
+                    <li><strong>Autonomía:</strong> El microservicio <code>media</code> posee sus propios datos (<code>chat_media</code>) y escala independientemente.</li>
+                    <li><strong>Desacoplamiento:</strong> Comunicación asíncrona no bloqueante frente a dependencias externas lentas.</li>
+                    <li><strong>Demostrabilidad:</strong> Flujos visuales e interactivos listos para presentar al final del curso.</li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: false,
+            theme: 'dark',
+            securityLevel: 'loose',
+            fontSize: 15,
+            flowchart: { 
+                curve: 'basis',
+                useMaxWidth: true,
+                htmlLabels: true
+            },
+            sequence: {
+                useMaxWidth: true,
+                actorFontSize: 15,
+                messageFontSize: 14,
+                noteFontSize: 13
+            }
+        });
+
+        // Safe async render with fallback
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                await mermaid.run();
+            } catch (err) {
+                console.warn("Mermaid auto-run issue, retrying individually:", err);
+                const nodes = document.querySelectorAll('.mermaid');
+                for (let i = 0; i < nodes.length; i++) {
+                    try {
+                        await mermaid.init(undefined, nodes[i]);
+                    } catch (e) {
+                        console.error("Failed to render mermaid node:", nodes[i], e);
+                    }
+                }
+            }
+        });
+
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === currentSlide);
+            });
+            document.getElementById('slideIndicator').textContent = 
+                `${String(currentSlide + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
+            document.getElementById('progressFill').style.width = 
+                `${((currentSlide + 1) / slides.length) * 100}%`;
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                prevSlide();
+            } else if (e.key === 'Home') {
+                currentSlide = 0;
+                updateSlide();
+            } else if (e.key === 'End') {
+                currentSlide = slides.length - 1;
+                updateSlide();
+            } else if (e.key.toLowerCase() === 'f') {
+                toggleFullScreen();
+            }
+        });
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+    </script>
+</body>
+</html>
