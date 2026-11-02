@@ -1,0 +1,48 @@
+name: CI/CD Media Service
+
+on:
+  push:
+    paths:
+      - '03_Comunicación/demo/media/**'
+      - '.github/workflows/deploy-media.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./03_Comunicación/demo/media
+          file: ./03_Comunicación/demo/media/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/microservicios/media:latest
+            ghcr.io/${{ github.repository_owner }}/microservicios/media:${{ github.sha }}
+
+      - name: Deploy to Kubernetes Cluster (si KUBECONFIG está configurado)
+        if: env.KUBECONFIG_SECRET != ''
+        env:
+          KUBECONFIG_SECRET: ${{ secrets.KUBECONFIG }}
+        run: |
+          mkdir -p ~/.kube
+          echo "$KUBECONFIG_SECRET" > ~/.kube/config
+          kubectl apply -f ./03_Comunicación/demo/media/k8s/media-all.yaml

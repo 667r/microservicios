@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: media
+  namespace: grupo-archivos-adjuntos
+  labels:
+    app: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: media
+  template:
+    metadata:
+      labels:
+        app: media
+    spec:
+      containers:
+        - name: media
+          image: ghcr.io/benjamackay/microservicios/media:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+              name: http
+          env:
+            - name: MONGODB_URL
+              value: "mongodb://media-mongodb:27017"
+            - name: RABBITMQ_URL
+              value: "amqp://chat:chat@rabbitmq:5672/%2F"
+            - name: USERS_URL
+              value: "http://users.servicios-base.svc.cluster.local:8000"
+            - name: CHANNELS_URL
+              value: "http://channels.servicios-base.svc.cluster.local:8000"
+            - name: MEDIA_STORAGE
+              value: "/media-storage"
+            - name: MAX_FILE_BYTES
+              value: "10485760"
+            - name: CHANNEL_QUOTA_BYTES
+              value: "104857600"
+            - name: CHANNEL_MAX_FILES
+              value: "1000"
+            - name: PREVIEW_CACHE_SECONDS
+              value: "86400"
+            - name: PREVIEW_MAX_ATTEMPTS
+              value: "3"
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          volumeMounts:
+            - name: storage
+              mountPath: /media-storage
+      volumes:
+        - name: storage
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: media
+  namespace: grupo-archivos-adjuntos
+  labels:
+    app: media
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8000
+      targetPort: 8000
+      name: http
+  selector:
+    app: media
