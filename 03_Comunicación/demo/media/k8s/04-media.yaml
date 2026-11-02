@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: media
-          image: ghcr.io/benjamackay/microservicios/media:latest
+          image: ghcr.io/667r/microservicios/media:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8000

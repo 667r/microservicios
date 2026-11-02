@@ -34,39 +34,36 @@ spec:
       containers:
         - name: mongodb
           image: mongo:7
+          args:
+            - mongod
+            - --bind_ip_all
+            - --wiredTigerCacheSizeGB
+            - "0.25"
           ports:
             - containerPort: 27017
               name: mongodb
           resources:
             requests:
               cpu: 50m
-              memory: 128Mi
+              memory: 192Mi
             limits:
               cpu: 250m
-              memory: 256Mi
+              memory: 384Mi
           volumeMounts:
             - name: data
               mountPath: /data/db
           livenessProbe:
-            exec:
-              command:
-                - mongosh
-                - --quiet
-                - --eval
-                - "db.adminCommand('ping').ok"
+            tcpSocket:
+              port: 27017
             initialDelaySeconds: 15
             periodSeconds: 10
-            timeoutSeconds: 5
+            timeoutSeconds: 2
           readinessProbe:
-            exec:
-              command:
-                - mongosh
-                - --quiet
-                - --eval
-                - "db.adminCommand('ping').ok"
+            tcpSocket:
+              port: 27017
             initialDelaySeconds: 5
             periodSeconds: 5
-            timeoutSeconds: 5
+            timeoutSeconds: 2
       volumes:
         - name: data
           persistentVolumeClaim:
@@ -110,12 +107,10 @@ spec:
     spec:
       containers:
         - name: rabbitmq
-          image: rabbitmq:3-management-alpine
+          image: rabbitmq:3-alpine
           ports:
             - containerPort: 5672
               name: amqp
-            - containerPort: 15672
-              name: management
           env:
             - name: RABBITMQ_DEFAULT_USER
               value: "chat"
@@ -124,28 +119,22 @@ spec:
           resources:
             requests:
               cpu: 50m
-              memory: 128Mi
+              memory: 192Mi
             limits:
               cpu: 250m
-              memory: 256Mi
+              memory: 384Mi
           livenessProbe:
-            exec:
-              command:
-                - rabbitmq-diagnostics
-                - -q
-                - ping
-            initialDelaySeconds: 20
+            tcpSocket:
+              port: 5672
+            initialDelaySeconds: 45
             periodSeconds: 15
-            timeoutSeconds: 5
+            timeoutSeconds: 2
           readinessProbe:
-            exec:
-              command:
-                - rabbitmq-diagnostics
-                - -q
-                - ping
-            initialDelaySeconds: 10
+            tcpSocket:
+              port: 5672
+            initialDelaySeconds: 25
             periodSeconds: 10
-            timeoutSeconds: 5
+            timeoutSeconds: 2
 ---
 apiVersion: v1
 kind: Service
@@ -186,7 +175,7 @@ spec:
     spec:
       containers:
         - name: media
-          image: ghcr.io/benjamackay/microservicios/media:latest
+          image: ghcr.io/667r/microservicios/media:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8000

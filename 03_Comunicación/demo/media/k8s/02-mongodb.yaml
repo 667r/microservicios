@@ -20,39 +20,36 @@ spec:
       containers:
         - name: mongodb
           image: mongo:7
+          args:
+            - mongod
+            - --bind_ip_all
+            - --wiredTigerCacheSizeGB
+            - "0.25"
           ports:
             - containerPort: 27017
               name: mongodb
           resources:
             requests:
               cpu: 50m
-              memory: 128Mi
+              memory: 192Mi
             limits:
               cpu: 250m
-              memory: 256Mi
+              memory: 384Mi
           volumeMounts:
             - name: data
               mountPath: /data/db
           livenessProbe:
-            exec:
-              command:
-                - mongosh
-                - --quiet
-                - --eval
-                - "db.adminCommand('ping').ok"
+            tcpSocket:
+              port: 27017
             initialDelaySeconds: 15
             periodSeconds: 10
-            timeoutSeconds: 5
+            timeoutSeconds: 2
           readinessProbe:
-            exec:
-              command:
-                - mongosh
-                - --quiet
-                - --eval
-                - "db.adminCommand('ping').ok"
+            tcpSocket:
+              port: 27017
             initialDelaySeconds: 5
             periodSeconds: 5
-            timeoutSeconds: 5
+            timeoutSeconds: 2
       volumes:
         - name: data
           persistentVolumeClaim:
